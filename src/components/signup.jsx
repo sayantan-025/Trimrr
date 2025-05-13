@@ -1,6 +1,6 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import Error from "./error";
-import {Input} from "./ui/input";
+import { Input } from "./ui/input";
 import * as Yup from "yup";
 import {
   Card,
@@ -10,10 +10,10 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import {Button} from "./ui/button";
-import {useNavigate, useSearchParams} from "react-router-dom";
-import {signup} from "@/db/apiAuth";
-import {BeatLoader} from "react-spinners";
+import { Button } from "./ui/button";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { signup } from "@/db/apiAuth";
+import { BeatLoader } from "react-spinners";
 import useFetch from "@/hooks/use-fetch";
 
 const Signup = () => {
@@ -27,18 +27,18 @@ const Signup = () => {
     name: "",
     email: "",
     password: "",
-    profile_pic: null,
+    profilepic: null,
   });
 
   const handleInputChange = (e) => {
-    const {name, value, files} = e.target;
+    const { name, value, files } = e.target;
     setFormData((prevState) => ({
       ...prevState,
       [name]: files ? files[0] : value,
     }));
   };
 
-  const {loading, error, fn: fnSignup, data} = useFetch(signup, formData);
+  const { loading, error, fn: fnSignup, data } = useFetch(signup, formData);
 
   useEffect(() => {
     if (error === null && data) {
@@ -58,10 +58,10 @@ const Signup = () => {
         password: Yup.string()
           .min(6, "Password must be at least 6 characters")
           .required("Password is required"),
-        profile_pic: Yup.mixed().required("Profile picture is required"),
+        profilepic: Yup.mixed().required("Profile picture is required"),
       });
 
-      await schema.validate(formData, {abortEarly: false});
+      await schema.validate(formData, { abortEarly: false });
       await fnSignup();
     } catch (error) {
       const newErrors = {};
@@ -72,7 +72,7 @@ const Signup = () => {
 
         setErrors(newErrors);
       } else {
-        setErrors({api: error.message});
+        setErrors({ api: error.message });
       }
     }
   };
@@ -116,13 +116,13 @@ const Signup = () => {
         {errors.password && <Error message={errors.password} />}
         <div className="space-y-1">
           <input
-            name="profile_pic"
+            name="profilepic"
             type="file"
             accept="image/*"
             onChange={handleInputChange}
           />
         </div>
-        {errors.profile_pic && <Error message={errors.profile_pic} />}
+        {errors.profilepic && <Error message={errors.profilepic} />}
       </CardContent>
       <CardFooter>
         <Button onClick={handleSignup}>
